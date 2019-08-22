@@ -2,6 +2,9 @@
 
 using namespace std;
 
+enum Menu{
+        LATTE = 5200, AMERICANO = 4000, CARAMEL_MACHIATTO = 7300
+    };
 
 class Coffee {
 public:
@@ -23,30 +26,15 @@ public :
     Latte() : Coffee(50, 200){}  
 };
 
-class Starbucks {
-public:
-    enum Menu{
-        LATTE = 5200, AMERICANO = 4000, CARAMEL_MACHIATTO = 7300
-    };
-    int money = 100000;
-    
-    void sellCoffee(Menu m) {
-        money += m;
-    }
-};
-
-
-
-
 class Barista {
 public:
-    Coffee makeCoffee(Starbucks::Menu m) {
+    Coffee makeCoffee(Menu m) {
         switch(m) {
-        case Starbucks::AMERICANO :
+        case AMERICANO :
             return Americano();
-        case Starbucks::CARAMEL_MACHIATTO :
+        case CARAMEL_MACHIATTO :
             return Machiatto();
-        case Starbucks::LATTE :
+        case LATTE :
             return Latte();
         default :
             return Coffee(1, 100000000);
@@ -55,38 +43,70 @@ public:
     }
 };
 
-class Casher {
+class Starbucks;
+class Casher{
 public:
     Barista b;
-    Starbucks s;
+    Starbucks* s;
+    void hired(Starbucks* s);
+    Coffee getOrder(Menu m);
+};
 
-    Coffee orderCoffee(Starbucks::Menu m) {
-        s.sellCoffee(m);
-        cout << "Current Budget in Starbucks : "<< s.money << "\n";
-        return b.makeCoffee(m);
+class Starbucks {
+public:
+Casher* casher;
+    
+    int money = 100000;
+    
+    void sellCoffee(Menu m) {
+        money += m;
+    }
+
+    Casher* getCasher() {
+        casher = new Casher();
+        casher->hired(this);
+        return casher;
     }
 };
+
+void Casher::hired(Starbucks* _s) {
+    s = _s;
+}
+
+Coffee Casher::getOrder(Menu m) {
+    s->sellCoffee(m);
+    std::cout << "Current Budget in Starbucks : " << s->money << "\n";
+    return b.makeCoffee(m);
+}
 
 class Customer {
 public:
     int weights = 70;
     int happiness = 20;
-    void getInStarbucks(Starbucks::Menu menu) {
-        Casher c;
-        drinkCoffee(c.orderCoffee(menu));
+    void getInStarbucks(Starbucks sb) {
+        drinkCoffee(order(sb));
     }
 
 private:
+    Coffee order(Starbucks sb) {
+        Casher* c = sb.getCasher();
+        return c->getOrder(thought());
+    }
+
     int drinkCoffee(Coffee c) {
         weights += (c.cal / 20);
         happiness += c.cafein;
+    }
+
+    Menu thought() {
+        return Menu::CARAMEL_MACHIATTO;
     }
 };
 
 int main(){
     Customer c;
-
-    c.getInStarbucks(Starbucks::AMERICANO);
+    Starbucks s;
+    c.getInStarbucks(s);
 
     cout<< "Now His weights : " << c.weights << "\n";
 
