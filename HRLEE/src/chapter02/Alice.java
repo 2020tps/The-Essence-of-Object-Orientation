@@ -4,8 +4,6 @@ public class Alice {
 	int height = 150;
 	
 	public Background background;
-	private Fan fan = new Fan();
-	private Cake cake = new Cake();
 	
 	public Alice() {
 		System.out.println("1. go 2. no");
@@ -19,15 +17,15 @@ public class Alice {
 //		}
 	}
 	
-	void eat() {
-		if(cake.eat())  {
+	void eat(Food f) {
+		if(f.eat())  {
 			height += 10;	
 		}
 		height += 0;
 	}
 	
-	void play() {
-		fan.play();
+	void play(Toy t) {
+		t.play();
 		height -=10;
 	}
 	

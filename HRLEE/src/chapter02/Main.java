@@ -11,17 +11,22 @@ class CAVE {
 	public void start() {
 		Alice alice = new Alice();
 		
+
+			
+		Food food = new Cake();
+		Toy toy = new Fan();
+
 		System.out.println();
 		
 		System.out.println("Height = " + alice.height);
 		
-		alice.eat();
+		alice.eat(food);
 		
 		System.out.println();
 		
 		System.out.println("Height = " + alice.height);
 		
-		alice.play();
+		alice.play(toy);
 		
 		System.out.println();
 		
