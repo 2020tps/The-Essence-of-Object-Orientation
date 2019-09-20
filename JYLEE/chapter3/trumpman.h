@@ -17,6 +17,10 @@ public:
     void layDown(){
         // Trumphuman also can laydown
     }    
+
+    void walk(){
+        // Trumphuman can walk
+    }
 };
 
 #endif
